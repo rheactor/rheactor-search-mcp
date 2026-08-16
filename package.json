@@ -1,0 +1,42 @@
+{
+  "name": "@rheactor/rheactor-search-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rheactor Search MCP.",
+  "bin": {
+    "rheactor-search-mcp": "./dist/index.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "scripts": {
+    "build": "bun run lint && tsdown",
+    "dev": "tsdown && bunx @modelcontextprotocol/inspector bun src/index.ts",
+    "lint": "bun run typecheck && bun run oxlint && bun run oxfmt",
+    "lint:fix": "bun run typecheck && bun run oxlint:fix && bun run oxfmt:fix",
+    "oxfmt": "oxfmt --check ./src",
+    "oxfmt:fix": "oxfmt --write ./src",
+    "oxlint": "oxlint ./src",
+    "oxlint:fix": "oxlint --fix ./src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "@rheactor/rheactor-core": "github:rheactor/rheactor-core#main",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@rheactor/rheactor-oxc-config": "github:@rheactor/rheactor-oxc-config",
+    "@types/node": "^26.4.1",
+    "openai": "^7.10.0",
+    "oxfmt": "^0.66.0",
+    "oxlint": "^1.81.0",
+    "oxlint-tsgolint": "^7.0.2001",
+    "tsdown": "^0.23.0",
+    "typescript": "^7.0.2"
+  }
+}
