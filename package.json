@@ -11,7 +11,8 @@
   ],
   "type": "module",
   "imports": {
-    "#/*": "./src/*"
+    "#/*": "./src/*",
+    "#public/*": "./public/*"
   },
   "scripts": {
     "build": "bun run lint && tsdown",

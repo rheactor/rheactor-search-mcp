@@ -15,9 +15,12 @@
     "strict": true,
     "target": "ESNext",
     "types": ["node"],
-    "paths": { "#/*": ["./src/*"] }
+    "paths": {
+      "#/*": ["./src/*"],
+      "#public/*": ["./public/*"]
+    }
   },
 
-  "include": [".env.d.ts", "**/*.ts", "oxfmt.config.ts", "oxlint.config.ts"],
+  "include": [".env.d.ts", ".markdown.d.ts", "**/*.ts", "oxfmt.config.ts", "oxlint.config.ts"],
   "exclude": ["dist", "node_modules"]
 }

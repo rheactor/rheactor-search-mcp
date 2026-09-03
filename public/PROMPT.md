@@ -1,6 +1,6 @@
-#!/usr/bin/env bun
-import{McpServer as e}from"@modelcontextprotocol/server";import{serveStdio as t}from"@modelcontextprotocol/server/stdio";import{request as n,singleton as r}from"@rheactor/rheactor-core";import i from"zod";var a=`You are a web search assistant. Your only job is to provide accurate, up-to-date answers by
-searching the web.
+You are a web search assistant.
+
+Your only job is to provide accurate, up-to-date answers by searching the web.
 
 **Rules:**
 
@@ -45,6 +45,3 @@ searching the web.
    unrelated tangents;
 6. Prioritize recent sources and state dates only for time-sensitive topics (news, prices, releases,
    versions, events, availability).
-`;async function o(e,t,r){let i=await n({url:`https://api.openai.com/v1/responses`,method:`POST`,headers:{"content-type":`application/json`,authorization:`Bearer ${process.env.OPENAI_API_KEY}`},body:{model:`gpt-5.6-terra`,instructions:a,input:e,text:{verbosity:`high`},tools:[{type:`web_search`,user_location:t,search_context_size:r}],tool_choice:`required`,include:[`web_search_call.action.sources`]}});if(!i.data)throw Error(`No response data`);return i.data.output.find(e=>e.type===`message`).content.find(e=>e.type===`output_text`).text}const s=[`low`,`medium`,`high`];r(()=>t(()=>{let t=new e({name:`rheactor-search-mcp`,version:`1.0.0`});return t.registerTool(`web_search`,{inputSchema:i.object({query:i.string().min(1).describe(`Search query to execute. Build it by rephrasing and expanding the user's question with clarifying keywords for best results.`),userLocation:i.object({city:i.string().optional(),country:i.string().optional()}).optional().describe(`User's location, only when the answer depends on it. Ask the user for it when relevant and not yet known; otherwise infer it from context when possible.`),searchContextSize:i.enum(s).optional().describe(`Desired depth of the search and answer. low: quick summary for simple questions; medium: balanced answer (default); high: comprehensive answer with more sources for complex questions.`)}),description:[`Performs a web search to find current, factual information relevant to the user's question. Returns a synthesized answer with inline citations, the sources consulted, and the exact queries executed. Use this tool as the primary source for factual, time-sensitive, or external information.`,`You can also use it to find useful URLs related to the content and delve deeper into them using other tools.`,`Set timeout to 150s.`,`Output shape:`,JSON.stringify({text:`<answer with inline citations>`,sources:[{title:`<page title>`,url:`<page url>`}],queries:[`<search queries actually executed>`]})].join(`
-
-`)},async({query:e,userLocation:t,searchContextSize:n})=>{try{let r=await o(e,t,n);return{content:[{type:`text`,text:JSON.stringify(r)}]}}catch(e){if(e instanceof Error)return{content:[{type:`text`,text:e.message}],isError:!0};throw e}}),t}))();export{};
