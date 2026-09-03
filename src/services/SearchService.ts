@@ -34,10 +34,11 @@ export async function search(
       ],
       tool_choice: "required",
       include: ["web_search_call.action.sources"],
+      store: true,
     } satisfies ResponseCreateParams,
   });
 
-  if (!response.data) {
+  if (!response.data?.output) {
     throw new Error("No response data");
   }
 
